@@ -113,23 +113,12 @@
             transition: transform 0.3s ease;
             display: flex;
             flex-direction: column;
+            border-top: 4px solid var(--primary-color); /* Added a top border for a pop of color */
         }
 
             .game-card:hover {
                 transform: translateY(-5px);
             }
-
-        .game-img {
-            width: 100%;
-            height: 180px;
-            background-color: #333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #777;
-            font-size: 0.9rem;
-            object-fit: cover;
-        }
 
         .game-info {
             padding: 1.5rem;
@@ -141,6 +130,7 @@
             .game-info h3 {
                 margin: 0 0 0.5rem 0;
                 color: white;
+                font-size: 1.4rem;
             }
 
             .game-info p {
@@ -195,7 +185,6 @@
             <div class="game-grid">
 
                 <div class="game-card">
-                    <img src="https://via.placeholder.com/400x250/2b2b36/777777?text=Game+Screenshot" alt="Game 1" class="game-img">
                     <div class="game-info">
                         <h3>Space Shmup</h3>
                         <p>MI 231 Space Shoot em up</p>
@@ -204,23 +193,22 @@
                 </div>
 
                 <div class="game-card">
-                    <img src="https://via.placeholder.com/400x250/2b2b36/777777?text=Game+Screenshot" alt="Game 2" class="game-img">
                     <div class="game-info">
                         <h3>Mission Demolition</h3>
                         <p>MI 231 Angry Birds Clone</p>
                         <a href="https://thepostlamp.itch.io/mi231-mission-demolition" target="_blank" class="btn-itch">Play on itch.io</a>
                     </div>
                 </div>
+
                 <div class="game-card">
-                    <img src="https://via.placeholder.com/400x250/2b2b36/777777?text=Game+Screenshot" alt="Game 3" class="game-img">
                     <div class="game-info">
                         <h3>Space Pests</h3>
                         <p>CAS 117 First person shooter </p>
                         <a href="https://thepostlamp.itch.io/181490686-3d-fps" target="_blank" class="btn-itch">Play on itch.io</a>
                     </div>
                 </div>
+
                 <div class="game-card">
-                    <img src="https://via.placeholder.com/400x250/2b2b36/777777?text=Game+Screenshot" alt="Game 4" class="game-img">
                     <div class="game-info">
                         <h3>Super Space-stronaught</h3>
                         <p>CAS 117 2D platformer </p>
@@ -235,7 +223,6 @@
             <div class="game-grid">
 
                 <div class="game-card">
-                    <div class="game-img">Work in Progress Image</div>
                     <div class="game-info">
                         <h3>Kaleido</h3>
                         <p>A JRPG Platform Fighter hybrid in a world about colors </p>
@@ -244,7 +231,6 @@
                 </div>
 
                 <div class="game-card">
-                    <div class="game-img">Concept Art</div>
                     <div class="game-info">
                         <h3>Soulslike Prototype</h3>
                         <p>Creating a soulslike in Unity</p>
@@ -258,19 +244,16 @@
 
     <script>
         function openTab(evt, tabName) {
-            // Hide all elements with class="tab-content"
             let tabContents = document.getElementsByClassName("tab-content");
             for (let i = 0; i < tabContents.length; i++) {
                 tabContents[i].classList.remove("active");
             }
 
-            // Remove the class "active" from all elements with class="tab-btn"
             let tabBtns = document.getElementsByClassName("tab-btn");
             for (let i = 0; i < tabBtns.length; i++) {
                 tabBtns[i].classList.remove("active");
             }
 
-            // Show the current tab, and add an "active" class to the button that opened the tab
             document.getElementById(tabName).classList.add("active");
             evt.currentTarget.classList.add("active");
         }
