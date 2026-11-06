@@ -1,262 +1,925 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Game Portfolio</title>
-    <style>
-        /* CSS Styles */
-        :root {
-            --bg-color: #121212;
-            --text-color: #e0e0e0;
-            --primary-color: #ff4757;
-            --card-bg: #1e1e24;
-            --hover-bg: #2b2b36;
-        }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connor Walsh · Game Developer</title>
+<meta name="description" content="Portfolio of Connor Walsh, Games and Interactive Media student at Michigan State University: Unity games, QA, audio, and video editing.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&family=Unbounded:wght@500;700&display=swap">
+<style>
+html{color-scheme:light}
+body{margin:0}
+img,video{max-width:100%}
+[hidden]{display:none!important}
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-        }
+/* Layout: profile header, then one dropdown per game; inside each, sections pair a short write-up with a plain diagram or a real screenshot. */
+:root{
+  --bg:#ECEFF5; --surface:#FFFFFF; --ink:#151A28; --muted:#556079; --line:#D3D9E4;
+  --accent:#DD4A16; --accent-ink:#FFFFFF; --accent-soft:#FCE4D9;
+  --ok:#1C7F53; --ok-soft:#DCF2E6; --warn:#946000; --warn-soft:#FAEDCF; --crit:#B9283A; --crit-soft:#F8DCE0;
+  /* diagram vocabulary: blue = you, red = enemy, grey = wall */
+  --d-panel:#F5F7FA; --d-soft:#E2E7EF; --d-wall:#A3ABBA; --d-you:#2F6BD8; --d-enemy:#D63E3E; --d-good:#1C8A57; --d-cyan:#1592B0; --d-yellow:#C08A00;
+  --display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F131C; --surface:#171D2A; --ink:#E8ECF4; --muted:#9BA5BC; --line:#2A3347;
+    --accent:#FF7C47; --accent-ink:#1B0E07; --accent-soft:#3B2016;
+    --ok:#62D49C; --ok-soft:#15301F; --warn:#F1C35C; --warn-soft:#33290F; --crit:#FF7C89; --crit-soft:#3B171D;
+    --d-panel:#121826; --d-soft:#232C3D; --d-wall:#5E687C; --d-you:#6E9BFF; --d-enemy:#FF6B6B; --d-good:#62D49C; --d-cyan:#4FD0EA; --d-yellow:#F1C35C;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F131C; --surface:#171D2A; --ink:#E8ECF4; --muted:#9BA5BC; --line:#2A3347;
+  --accent:#FF7C47; --accent-ink:#1B0E07; --accent-soft:#3B2016;
+  --ok:#62D49C; --ok-soft:#15301F; --warn:#F1C35C; --warn-soft:#33290F; --crit:#FF7C89; --crit-soft:#3B171D;
+  --d-panel:#121826; --d-soft:#232C3D; --d-wall:#5E687C; --d-you:#6E9BFF; --d-enemy:#FF6B6B; --d-good:#62D49C; --d-cyan:#4FD0EA; --d-yellow:#F1C35C;
+  color-scheme:dark;
+}
 
-        header {
-            text-align: center;
-            padding: 3rem 1rem;
-            background-color: #0a0a0c;
-            border-bottom: 2px solid var(--card-bg);
-        }
+*{box-sizing:border-box}
+body{
+  background:var(--bg); color:var(--ink); font:400 17px/1.6 var(--body);
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  -webkit-font-smoothing:antialiased;
+}
+.page{max-width:1080px; margin:0 auto; display:flex; flex-direction:column; gap:52px; padding-block:48px 64px}
+p{margin:0}
+h1,h2,h3,h4{text-wrap:balance; margin:0}
+h1{font:700 clamp(2.5rem, 8vw, 4.6rem)/1 var(--display); letter-spacing:-.02em}
+h1 .accent{color:var(--accent)}
+h2{font:500 1.5rem/1.2 var(--display)}
+h4{font:700 1.12rem/1.3 var(--body)}
+.eyebrow{font:500 12.5px/1.4 var(--mono); text-transform:uppercase; letter-spacing:.12em; color:var(--muted)}
 
-            header h1 {
-                margin: 0;
-                font-size: 2.5rem;
-                color: white;
-            }
+/* hero */
+.hero{display:flex; flex-direction:column; gap:20px}
+.lede{font-size:1.18rem; max-width:58ch}
+.open{display:flex; flex-wrap:wrap; align-items:center; gap:10px}
+.chips{display:flex; flex-wrap:wrap; gap:8px; list-style:none; margin:0; padding:0}
+.chips li{border:1px solid var(--line); background:var(--surface); border-radius:999px; padding:5px 13px; font-size:15px}
+.contact{display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px}
+.email{font:500 15px/1 var(--mono); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:10px 12px; user-select:all; overflow-wrap:anywhere}
+.btn{font:700 15px/1 var(--body); background:var(--accent); color:var(--accent-ink); border:0; border-radius:8px; padding:11px 16px; cursor:pointer}
+.btn:hover{filter:brightness(1.06)}
+.btn:focus-visible, summary:focus-visible{outline:3px solid var(--accent); outline-offset:2px}
+.avail{color:var(--muted); font-size:15px}
 
-            header p {
-                color: #a0a0a0;
-                margin-top: 0.5rem;
-            }
+.section{display:flex; flex-direction:column; gap:16px}
+.section-head{display:flex; flex-direction:column; gap:8px}
+.section-head p{color:var(--muted); max-width:66ch}
+.legend{display:flex; flex-wrap:wrap; gap:6px 16px; font:500 12.5px/1.4 var(--mono); color:var(--muted)}
+.legend span{display:inline-flex; align-items:center; gap:6px}
+.sw{width:12px; height:12px; display:inline-block}
+.sw.you{background:var(--d-you); border-radius:50%}
+.sw.enemy{background:var(--d-enemy); border-radius:50%}
+.sw.wall{background:var(--d-wall)}
 
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
+/* game dropdowns */
+.game{background:var(--surface); border:1px solid var(--line); border-radius:14px}
+.game > summary{list-style:none; cursor:pointer; padding:20px 22px; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 16px; align-items:start}
+.game > summary::-webkit-details-marker{display:none}
+.sum-main{display:flex; flex-direction:column; gap:8px; min-width:0}
+.sum-title{display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px}
+.sum-title h3{font:500 1.4rem/1.2 var(--display)}
+.pitch{color:var(--ink); max-width:70ch}
+.role{font-size:15px; color:var(--muted)}
+.role b{color:var(--ink)}
+.chev{width:34px; height:34px; border-radius:50%; border:1px solid var(--line); display:grid; place-items:center; margin-top:2px; transition:transform .2s ease}
+.chev::before{content:""; width:9px; height:9px; border-right:2px solid var(--ink); border-bottom:2px solid var(--ink); transform:translateY(-2px) rotate(45deg)}
+.game[open] .chev{transform:rotate(180deg)}
+.game > summary:hover .chev{border-color:var(--accent)}
+.game-body{border-top:1px solid var(--line); padding:22px; display:flex; flex-direction:column; gap:34px}
 
-        /* Tab Navigation */
-        .tabs {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
+.pill{font:500 11.5px/1 var(--mono); text-transform:uppercase; letter-spacing:.08em; padding:5px 9px; border-radius:999px; white-space:nowrap}
+.pill.dev{background:var(--ok-soft); color:var(--ok)}
+.pill.proto{background:var(--warn-soft); color:var(--warn)}
+.pill.fan{background:var(--accent-soft); color:var(--accent)}
+.tag{font:400 12.5px/1.4 var(--mono); color:var(--muted)}
 
-        .tab-btn {
-            background-color: var(--card-bg);
-            color: var(--text-color);
-            border: none;
-            padding: 10px 24px;
-            font-size: 1.1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: bold;
-        }
+/* sections inside a game */
+.sec{display:grid; grid-template-columns:minmax(0,5fr) minmax(0,6fr); gap:26px; align-items:start}
+.sec.solo{grid-template-columns:minmax(0,1fr)}
+.sec-text{display:flex; flex-direction:column; gap:10px; min-width:0}
+.sec-text .num{font:500 11.5px/1 var(--mono); color:var(--accent); letter-spacing:.1em; text-transform:uppercase}
+.sec-text p, .sec-text li{max-width:62ch}
+.points{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px}
+.points li{position:relative; padding-left:20px}
+.points li::before{content:""; position:absolute; left:2px; top:.62em; width:7px; height:7px; background:var(--accent)}
+.points b, .sec-text b{font-weight:700}
 
-            .tab-btn:hover {
-                background-color: var(--hover-bg);
-            }
+figure{margin:0; display:flex; flex-direction:column; gap:8px; min-width:0}
+figcaption{font-size:13.5px; color:var(--muted); line-height:1.45}
+.shot img, .wide-shot img{display:block; width:100%; height:auto; border-radius:10px; border:1px solid var(--line)}
+.pair-row{display:flex; justify-content:center; gap:10px; background:var(--d-panel); border:1px solid var(--line); border-radius:10px; padding:12px}
+.pair-row img{display:block; width:auto; max-width:48%; max-height:420px; height:auto; border-radius:6px}
+.pair-row.one img{max-width:100%}
 
-            .tab-btn.active {
-                background-color: var(--primary-color);
-                color: white;
-            }
+.watch{display:inline-flex; align-items:center; gap:6px; font:700 15px/1 var(--body); color:var(--accent-ink); background:var(--accent); text-decoration:none; padding:11px 16px; border-radius:8px}
+.watch:hover{filter:brightness(1.06)}
+.watch:focus-visible{outline:3px solid var(--accent); outline-offset:2px}
+.facts{margin:0; display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:10px}
+.facts div{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:10px 12px; min-width:0}
+.facts dt{font:500 11px/1.2 var(--mono); text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:4px}
+.facts dd{margin:0; font-size:15px; line-height:1.4}
+@media (max-width: 700px){ .facts{grid-template-columns:minmax(0,1fr)} }
+/* video + progress */
+.clip video{display:block; width:100%; height:auto; border-radius:10px; border:1px solid var(--line); background:#000}
+.clip.tall .pair-row video{width:auto; max-width:100%; max-height:520px; border:0; border-radius:6px}
+.progress{display:flex; flex-direction:column; gap:10px}
+.progress-row{display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:10px}
+.progress-row.three{grid-template-columns:repeat(3, minmax(0,1fr))}
+.progress-row figure img{display:block; width:100%; height:auto; aspect-ratio:16/9; object-fit:cover; border-radius:8px; border:1px solid var(--line)}
+.progress-row figcaption b{color:var(--ink); font-family:var(--mono); font-size:12px; font-weight:500; display:block}
+@media (max-width: 700px){ .progress-row, .progress-row.three{grid-template-columns:repeat(2, minmax(0,1fr))} }
 
-        /* Tab Content */
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.4s;
-        }
+/* diagrams */
+.dia{display:block; width:100%; height:auto; background:var(--d-panel); border:1px solid var(--line); border-radius:10px}
+.dia text{font-family:var(--mono)}
+.d-wall{fill:var(--d-wall)}
+.d-you{fill:var(--d-you)}
+.d-enemy{fill:var(--d-enemy)}
+.d-good{fill:var(--d-good)}
+.d-box{fill:var(--d-soft); stroke:var(--line)}
+.d-hot{fill:var(--accent-soft); stroke:var(--accent)}
+.d-line{stroke:var(--ink); stroke-width:2; fill:none}
+.d-you-line{stroke:var(--d-you); stroke-width:2.5; fill:none}
+.d-enemy-line{stroke:var(--d-enemy); stroke-width:2.5; fill:none}
+.d-acc-line{stroke:var(--accent); stroke-width:2; fill:none}
+.d-dash{stroke-dasharray:5 5}
+.d-t{fill:var(--ink); font-size:12px; font-weight:500}
+.d-n{fill:var(--muted); font-size:10.5px}
+.d-a{fill:var(--accent); font-size:11px; font-weight:500}
+.d-r{fill:var(--d-enemy); font-size:11px; font-weight:500}
+.d-g{fill:var(--d-good); font-size:11px; font-weight:500}
+.d-wall-line{stroke:var(--d-wall); fill:none}
+.ah{fill:var(--ink)} .ah-you{fill:var(--d-you)} .ah-enemy{fill:var(--d-enemy)}
 
-            .tab-content.active {
-                display: block;
-            }
+/* bug log */
+.ticket-row{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:14px}
+.ticket{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:14px; display:flex; flex-direction:column; gap:10px; min-width:0}
+.ticket-top{display:flex; flex-wrap:wrap; align-items:center; gap:8px}
+.sev{font:500 11px/1 var(--mono); text-transform:uppercase; letter-spacing:.08em; padding:4px 8px; border-radius:4px}
+.sev.crit{background:var(--crit-soft); color:var(--crit)}
+.sev.major{background:var(--warn-soft); color:var(--warn)}
+.ticket-id{font:400 12px/1 var(--mono); color:var(--muted)}
+.ticket h5{font:700 16px/1.35 var(--body); margin:0}
+.ticket dl{margin:0; display:flex; flex-direction:column; gap:6px; font-size:15px; line-height:1.5}
+.ticket dt{font:500 11px/1.2 var(--mono); text-transform:uppercase; letter-spacing:.08em; color:var(--muted)}
+.ticket dd{margin:0 0 4px}
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
+/* supporting panels */
+.more{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:20px}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:22px; display:flex; flex-direction:column; gap:12px; min-width:0}
+.panel h3{font:500 1.15rem/1.2 var(--display)}
+.panel .sub{font:400 12.5px/1.4 var(--mono); color:var(--muted)}
+.kit{margin:0; display:grid; grid-template-columns:max-content 1fr; gap:8px 18px; font-size:15.5px}
+.kit dt{font:500 11.5px/1.9 var(--mono); text-transform:uppercase; letter-spacing:.08em; color:var(--muted)}
+.kit dd{margin:0}
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+footer{border-top:1px solid var(--line); padding-top:20px; display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px; color:var(--muted); font-size:14px}
+footer .mono{font-family:var(--mono)}
 
-        /* Game Cards Grid */
-        .game-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .game-card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            border-top: 4px solid var(--primary-color); /* Added a top border for a pop of color */
-        }
-
-            .game-card:hover {
-                transform: translateY(-5px);
-            }
-
-        .game-info {
-            padding: 1.5rem;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-            .game-info h3 {
-                margin: 0 0 0.5rem 0;
-                color: white;
-                font-size: 1.4rem;
-            }
-
-            .game-info p {
-                margin: 0 0 1.5rem 0;
-                color: #b0b0b0;
-                flex-grow: 1;
-            }
-
-        /* Buttons & Badges */
-        .btn-itch {
-            display: inline-block;
-            background-color: var(--primary-color);
-            color: white;
-            text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 6px;
-            text-align: center;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-
-            .btn-itch:hover {
-                background-color: #ff2a3f;
-            }
-
-        .status-badge {
-            display: inline-block;
-            background-color: #4a4a5a;
-            color: #d0d0d0;
-            padding: 8px 12px;
-            border-radius: 6px;
-            text-align: center;
-            font-weight: bold;
-            border: 1px dashed #777;
-        }
-    </style>
+@media (max-width: 860px){
+  .sec{grid-template-columns:minmax(0,1fr); gap:16px}
+  .ticket-row{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width: 700px){
+  .more{grid-template-columns:minmax(0,1fr)}
+  body{font-size:16.5px}
+  .page{gap:42px; padding-block:32px 48px}
+  .game > summary, .game-body{padding:16px}
+  .pair-row img{max-height:320px}
+}
+@media (max-width: 420px){
+  .kit{grid-template-columns:minmax(0,1fr); gap:2px}
+  .kit dd{margin-bottom:8px}
+}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important} }
+</style>
 </head>
 <body>
+<!-- shared arrowheads for every diagram -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ah"/></marker>
+    <marker id="ahYou" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ah-you"/></marker>
+    <marker id="ahEnemy" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ah-enemy"/></marker>
+  </defs>
+</svg>
 
-    <header>
-        <h1>Sean Connor Walsh Game Dev Portfolio</h1>
-        <p>A collection of my finished games and prototypes.</p>
-    </header>
+<main class="page">
 
-    <div class="container">
-        <div class="tabs">
-            <button class="tab-btn active" onclick="openTab(event, 'finished')">Finished Games</button>
-            <button class="tab-btn" onclick="openTab(event, 'unfinished')">Unfinished / Prototypes</button>
-        </div>
+  <header class="hero">
+    <p class="eyebrow">Game developer · Michigan State University</p>
+    <h1>Connor <span class="accent">Walsh</span></h1>
+    <p class="lede">Junior in Games and Interactive Media. I build games in Unity, playtest every build by hand, write up what breaks, and cut gameplay footage in Premiere Pro.</p>
+    <div class="open">
+      <p class="eyebrow">Open to</p>
+      <ul class="chips">
+        <li>QA &amp; multiplayer testing</li>
+        <li>Video &amp; gameplay media</li>
+        <li>Gameplay &amp; level feedback</li>
+        <li>Unity development</li>
+      </ul>
+    </div>
+    <div class="contact">
+      <span class="email" id="email">seancwalsh2006@gmail.com</span>
+      <button class="btn" id="copy" type="button">Copy email</button>
+      <span class="avail">Remote · available November 2026 through January 2027</span>
+    </div>
+  </header>
 
-        <div id="finished" class="tab-content active">
-            <div class="game-grid">
-
-                <div class="game-card">
-                    <div class="game-info">
-                        <h3>Space Shmup</h3>
-                        <p>MI 231 Space Shoot em up</p>
-                        <a href="https://thepostlamp.itch.io/mi-231-space-shmup-connor-walsh" target="_blank" class="btn-itch">Play on itch.io</a>
-                    </div>
-                </div>
-
-                <div class="game-card">
-                    <div class="game-info">
-                        <h3>Mission Demolition</h3>
-                        <p>MI 231 Angry Birds Clone</p>
-                        <a href="https://thepostlamp.itch.io/mi231-mission-demolition" target="_blank" class="btn-itch">Play on itch.io</a>
-                    </div>
-                </div>
-
-                <div class="game-card">
-                    <div class="game-info">
-                        <h3>Space Pests</h3>
-                        <p>CAS 117 First person shooter </p>
-                        <a href="https://thepostlamp.itch.io/181490686-3d-fps" target="_blank" class="btn-itch">Play on itch.io</a>
-                    </div>
-                </div>
-
-                <div class="game-card">
-                    <div class="game-info">
-                        <h3>Super Space-stronaught</h3>
-                        <p>CAS 117 2D platformer </p>
-                        <a href="https://thepostlamp.itch.io/space-platformer" target="_blank" class="btn-itch">Play on itch.io</a>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <div id="unfinished" class="tab-content">
-            <div class="game-grid">
-
-                <div class="game-card">
-                    <div class="game-info">
-                        <h3>Kaleido</h3>
-                        <p>A JRPG Platform Fighter hybrid in a world about colors </p>
-                        <div class="status-badge">In Development with Group</div>
-                    </div>
-                </div>
-
-                <div class="game-card">
-                    <div class="game-info">
-                        <h3>Soulslike Prototype</h3>
-                        <p>Creating a soulslike in Unity</p>
-                        <div class="status-badge">Solo Project</div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+  <section class="section" aria-labelledby="projects-h">
+    <div class="section-head">
+      <h2 id="projects-h">Projects</h2>
+      <p>Open a game to see what I worked on. Screenshots come from the real builds. The diagrams use one simple key:</p>
+      <div class="legend"><span><i class="sw you"></i>you / your shot</span><span><i class="sw enemy"></i>enemy</span><span><i class="sw wall"></i>wall or obstacle</span></div>
     </div>
 
-    <script>
-        function openTab(evt, tabName) {
-            let tabContents = document.getElementsByClassName("tab-content");
-            for (let i = 0; i < tabContents.length; i++) {
-                tabContents[i].classList.remove("active");
-            }
+    <!-- ===================== ARMADILLO BOWLING ===================== -->
+    <details class="game" id="armadillo-bowling" open>
+      <summary>
+        <div class="sum-main">
+          <div class="sum-title"><h3>Armadillo Bowling</h3><span class="pill dev">In development</span><span class="tag">Unity 6 · 2D URP · Wwise</span></div>
+          <p class="pitch">A physics bowling game set in the desert. Fling armadillos down the lanes to knock back a horde of cactus mutants. It plays like tower defense with no towers: every cluster of enemies is one you set up with your own shots.</p>
+          <p class="role">Clustre Studio, team of 3 · <b>My role:</b> programming, audio engineering, design</p>
+        </div>
+        <span class="chev" aria-hidden="true"></span>
+      </summary>
+      <div class="game-body">
+        <dl class="facts"><div><dt>Type</dt><dd>Original game, team project</dd></div><div><dt>Team</dt><dd>Clustre Studio: me, a pixel artist, and a composer</dd></div><div><dt>Stage</dt><dd>26 levels built; public Steam demo planned</dd></div></dl>
 
-            let tabBtns = document.getElementsByClassName("tab-btn");
-            for (let i = 0; i < tabBtns.length; i++) {
-                tabBtns[i].classList.remove("active");
-            }
+        <figure class="clip">
+          <video src="images/armadillo-bowling-clip.mp4" poster="images/armadillo-bowling-clip-poster.jpg" width="1280" height="720" autoplay muted loop playsinline preload="metadata" aria-label="Gameplay clip: armadillos launched into a dense cactus horde on a Mesa level"></video>
+          <figcaption>Gameplay from a Mesa level, late October build. Muted.</figcaption>
+        </figure>
 
-            document.getElementById(tabName).classList.add("active");
-            evt.currentTarget.classList.add("active");
-        }
-    </script>
+        <div class="progress">
+          <span class="eyebrow">How it got here</span>
+          <div class="progress-row">
+            <figure><img src="images/ab-progress-sep27.jpg" width="1280" height="720" alt="September build: cacti are plain green rectangles" loading="lazy"><figcaption><b>Sep 27</b>Placeholder rectangles, mechanics first.</figcaption></figure>
+            <figure><img src="images/ab-progress-oct11.jpg" width="1280" height="720" alt="October 11 build: a Roadside level with colored balls and the aim line" loading="lazy"><figcaption><b>Oct 11</b>Roadside levels and armadillo types in.</figcaption></figure>
+            <figure><img src="images/ab-progress-oct29.jpg" width="1280" height="720" alt="October 29 build: pixel-art cacti crowd a Mesa level" loading="lazy"><figcaption><b>Oct 29</b>Character art in, bigger waves.</figcaption></figure>
+            <figure><img src="images/ab-gameplay.jpg" width="1400" height="784" alt="November build: a ×7 bank shot and ricochet trick run on Flatlands 5" loading="lazy"><figcaption><b>Nov 6</b>Trick scoring and the current HUD.</figcaption></figure>
+          </div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-text">
+            <span class="num">01 · Physics</span>
+            <h4>Momentum damage</h4>
+            <p>Damage comes from speed times mass, so a fast shot hits harder than a slow one. Armadillos deflect at an angle set by where they strike, and a knocked-back cactus carries about half its momentum into the next one. A direct hit is the biggest damage event, and cactus-on-cactus chains reward a good setup.</p>
+            <p>The old and new damage models are both still in the build. <b>Tab</b> switches between them so the team can compare them in playtests.</p>
+          </div>
+          <figure>
+            <svg class="dia" viewBox="0 0 360 220" role="img" aria-label="Diagram: a blue armadillo hits a red cactus off-center, deflects downward at an angle, and the cactus is knocked into a second cactus carrying about half its momentum">
+              <rect x="0" y="0" width="360" height="10" class="d-wall"/><rect x="0" y="210" width="360" height="10" class="d-wall"/>
+              <text x="16" y="34" class="d-t">damage = speed × mass</text>
+              <circle cx="56" cy="122" r="15" class="d-you"/>
+              <text x="30" y="154" class="d-n">armadillo</text>
+              <line x1="74" y1="121" x2="146" y2="116" class="d-you-line" marker-end="url(#ahYou)"/>
+              <circle cx="168" cy="104" r="15" class="d-enemy"/>
+              <line x1="160" y1="124" x2="210" y2="172" class="d-you-line d-dash" marker-end="url(#ahYou)"/>
+              <text x="220" y="170" class="d-n">deflects at the angle</text>
+              <text x="220" y="184" class="d-n">set by the hit point</text>
+              <line x1="186" y1="99" x2="252" y2="86" class="d-enemy-line" marker-end="url(#ahEnemy)"/>
+              <circle cx="274" cy="82" r="15" class="d-enemy"/>
+              <line x1="292" y1="79" x2="334" y2="72" class="d-enemy-line d-dash" marker-end="url(#ahEnemy)"/>
+              <text x="190" y="60" class="d-r">≈50% momentum carries on</text>
+            </svg>
+          </figure>
+        </div>
+
+        <div class="sec">
+          <div class="sec-text">
+            <span class="num">02 · Scoring</span>
+            <h4>Trick runs, Tony Hawk style</h4>
+            <p>Every shot is a run. Each kill adds points and each trick adds +1 to the multiplier. When the shot leaves play, points × multiplier go on the score.</p>
+            <ul class="points">
+              <li><b>Bank shot</b> off a wall, <b>ricochet</b> off an obstacle, <b>portal</b> through a pipe or corn maze, <b>curveball</b> with heavy spin.</li>
+              <li><b>Chain reaction</b> when a knocked cactus kills another, <b>one and done</b> on a tough cactus, <b>clean sweep</b> when the field is cleared.</li>
+              <li>A run with no kills scores nothing, and a hero that never leaves the field can't farm the multiplier forever.</li>
+            </ul>
+          </div>
+          <figure>
+            <svg class="dia" viewBox="0 0 360 220" role="img" aria-label="Diagram: a blue shot bounces off the top wall, the bottom wall and a grey rock, raising the multiplier from times 2 to times 4, then kills a red cactus">
+              <rect x="0" y="0" width="360" height="12" class="d-wall"/><rect x="0" y="208" width="360" height="12" class="d-wall"/>
+              <rect x="196" y="126" width="28" height="28" rx="5" class="d-wall"/>
+              <text x="198" y="170" class="d-n">rock</text>
+              <circle cx="26" cy="168" r="10" class="d-you"/>
+              <polyline points="32,158 88,13 156,207 196,138 262,62" class="d-you-line" marker-end="url(#ahYou)"/>
+              <text x="96" y="34" class="d-a">BANK +1 → ×2</text>
+              <text x="166" y="196" class="d-a">BANK +1 → ×3</text>
+              <text x="232" y="120" class="d-a">RICOCHET → ×4</text>
+              <circle cx="276" cy="50" r="13" class="d-enemy"/>
+              <text x="222" y="92" class="d-t">kill: points × 4</text>
+            </svg>
+          </figure>
+        </div>
+
+        <div class="sec">
+          <div class="sec-text">
+            <span class="num">03 · Content</span>
+            <h4>27 armadillos, 24 cacti, and the Wanted board</h4>
+            <p>Each armadillo and cactus has its own behavior script: boomerangs, sticky bombs, a lasso, a stampede of cows, cacti that shield, swap lanes, heal each other, or split open like nesting dolls. Gold-marked slots are heroes, which charge up by hitting enemies.</p>
+            <p>The <b>Wanted board</b> previews what a level sends. Waves are random, so the game plays the level out a few times on paper with its own random numbers and averages the results. A common cactus gets a thick stack of posters, and a rare one gets a single poster.</p>
+          </div>
+          <figure class="shot">
+            <img src="images/ab-loadout.jpg" width="1400" height="786" alt="Armadillo Bowling loadout screen: a Wanted board of cactus posters for Flatlands 5 above lockers for every armadillo type, a ball-return rack, and a Let's Roll button">
+            <figcaption>The pre-level loadout. Poster stacks show how often each cactus type shows up.</figcaption>
+          </figure>
+        </div>
+
+        <div class="sec">
+          <div class="sec-text">
+            <span class="num">04 · Audio</span>
+            <h4>Adaptive music in Wwise</h4>
+            <p>A level plays like one song, but it's really loops that switch on the bar as the game changes. A Wwise state group follows the waves, and the wave director waits so the final wave walks on exactly as the guitar drops.</p>
+            <ul class="points">
+              <li><b>The distorted guitar only plays for the final push and bosses</b>, so players learn that guitar means "here they come." During those sections the cacti step in time with the beat.</li>
+              <li><b>Vocals are cut into 4-bar chunks</b> sorted into pools. Every 4 bars the game picks a random chunk, so the lyrics land in a different order each run. A big trick makes the next chunk the hook, but never while you're in danger.</li>
+              <li>Live parameters for combo and danger shape the mix. It's built on a placeholder track for now, to be replaced with original music.</li>
+              <li>I also record original foley and tune sound effects through Wwise's authoring API.</li>
+            </ul>
+          </div>
+          <figure>
+            <svg class="dia" viewBox="0 0 360 250" role="img" aria-label="Diagram: music sections flow Intro, Verse, Build, Chorus, then Build, Final with guitar, Peak, Win or Lose, with Breakdown branching from Verse, and a row of 4-bar vocal chunks in random order">
+              <rect x="10" y="22" width="70" height="30" rx="6" class="d-box"/><text x="45" y="41" text-anchor="middle" class="d-t">Intro</text>
+              <rect x="98" y="22" width="70" height="30" rx="6" class="d-box"/><text x="133" y="41" text-anchor="middle" class="d-t">Verse</text>
+              <rect x="186" y="22" width="70" height="30" rx="6" class="d-box"/><text x="221" y="41" text-anchor="middle" class="d-t">Build</text>
+              <rect x="274" y="22" width="76" height="30" rx="6" class="d-box"/><text x="312" y="41" text-anchor="middle" class="d-t">Chorus</text>
+              <line x1="80" y1="37" x2="96" y2="37" class="d-line" marker-end="url(#ah)"/>
+              <line x1="168" y1="37" x2="184" y2="37" class="d-line" marker-end="url(#ah)"/>
+              <line x1="256" y1="37" x2="272" y2="37" class="d-line" marker-end="url(#ah)"/>
+              <rect x="98" y="72" width="70" height="26" rx="6" class="d-box"/><text x="133" y="89" text-anchor="middle" class="d-n">Breakdown</text>
+              <line x1="133" y1="54" x2="133" y2="70" class="d-line" marker-start="url(#ah)" marker-end="url(#ah)"/>
+              <text x="176" y="89" class="d-n">field empty</text>
+              <path d="M312 52 V112 H45 V128" class="d-line" marker-end="url(#ah)"/>
+              <text x="186" y="106" class="d-n">"FINAL WAVE" banner</text>
+              <rect x="10" y="130" width="70" height="30" rx="6" class="d-box"/><text x="45" y="149" text-anchor="middle" class="d-t">Build</text>
+              <rect x="98" y="130" width="70" height="30" rx="6" class="d-hot"/><text x="133" y="149" text-anchor="middle" class="d-a">FINAL</text>
+              <rect x="186" y="130" width="70" height="30" rx="6" class="d-box"/><text x="221" y="149" text-anchor="middle" class="d-t">Peak</text>
+              <rect x="274" y="130" width="76" height="30" rx="6" class="d-box"/><text x="312" y="149" text-anchor="middle" class="d-t">Win/Lose</text>
+              <line x1="80" y1="145" x2="96" y2="145" class="d-line" marker-end="url(#ah)"/>
+              <line x1="168" y1="145" x2="184" y2="145" class="d-line" marker-end="url(#ah)"/>
+              <line x1="256" y1="145" x2="272" y2="145" class="d-line" marker-end="url(#ah)"/>
+              <text x="98" y="178" class="d-a">guitar drops, wave lands on the bar</text>
+              <text x="10" y="204" class="d-n">VOCALS · 4-bar chunks, random order</text>
+              <rect x="10" y="212" width="80" height="24" rx="4" class="d-box"/><text x="50" y="228" text-anchor="middle" class="d-n">verse</text>
+              <rect x="94" y="212" width="80" height="24" rx="4" class="d-box"/><text x="134" y="228" text-anchor="middle" class="d-n">adlib</text>
+              <rect x="178" y="212" width="80" height="24" rx="4" class="d-hot"/><text x="218" y="228" text-anchor="middle" class="d-a">HOOK (trick!)</text>
+              <rect x="262" y="212" width="88" height="24" rx="4" class="d-box"/><text x="306" y="228" text-anchor="middle" class="d-n">verse</text>
+            </svg>
+          </figure>
+        </div>
+
+        <div class="sec">
+          <div class="sec-text">
+            <span class="num">05 · Systems</span>
+            <h4>Rewind instead of restart</h4>
+            <p>The level records snapshots as you play: every cactus, armadillo, and puddle, plus the wave director, the score, and the random number generator. After a loss you can rewind to any earlier moment and play on from there, and the same cacti come down the same lanes unless you play differently.</p>
+            <p>Memory stays bounded. When the snapshot list fills, every other old snapshot is dropped and the interval doubles, so a long level gets a coarser timeline instead of an unlimited one.</p>
+          </div>
+          <figure>
+            <svg class="dia" viewBox="0 0 360 170" role="img" aria-label="Diagram: a timeline of snapshot ticks ending in a red loss marker, with an arrow rewinding back to an earlier snapshot, and a second timeline with ticks twice as far apart after thinning">
+              <text x="16" y="26" class="d-n">SNAPSHOTS WHILE PLAYING</text>
+              <line x1="16" y1="70" x2="318" y2="70" class="d-line"/>
+              <g class="d-you">
+                <rect x="15" y="62" width="3" height="16"/><rect x="45" y="62" width="3" height="16"/><rect x="75" y="62" width="3" height="16"/><rect x="105" y="62" width="3" height="16"/><rect x="135" y="62" width="3" height="16"/><rect x="165" y="62" width="3" height="16"/><rect x="195" y="62" width="3" height="16"/><rect x="225" y="62" width="3" height="16"/><rect x="255" y="62" width="3" height="16"/><rect x="285" y="62" width="3" height="16"/>
+              </g>
+              <path d="M326 62 l14 14 M340 62 l-14 14" class="d-enemy-line"/>
+              <text x="320" y="96" class="d-r">loss</text>
+              <path d="M330 56 Q 252 6 172 56" class="d-line" marker-end="url(#ah)"/>
+              <text x="196" y="30" class="d-t">rewind, play on</text>
+              <text x="16" y="124" class="d-n">LIST FULL → DROP EVERY OTHER, DOUBLE THE GAP</text>
+              <line x1="16" y1="150" x2="318" y2="150" class="d-line"/>
+              <g class="d-you">
+                <rect x="15" y="142" width="3" height="16"/><rect x="75" y="142" width="3" height="16"/><rect x="135" y="142" width="3" height="16"/><rect x="195" y="142" width="3" height="16"/><rect x="255" y="142" width="3" height="16"/>
+              </g>
+            </svg>
+          </figure>
+        </div>
+
+        <div class="sec">
+          <div class="sec-text">
+            <span class="num">06 · Levels</span>
+            <h4>26 levels across five stages</h4>
+            <p>Two tutorials in the Zoo, then five levels each in Flatlands, Roadside, Oasis, and Mesa. Each stage changes the rules with its own field objects, like bouncers, half-pipes, gutters, freight trains, and teleport pipes. Each stage ends in a special level that hands out a hero.</p>
+            <ul class="points">
+              <li><b>Tower Defense:</b> burrowed armadillos auto-fire down the lanes.</li>
+              <li><b>GTA:</b> drive an invincible Carmadillo.</li>
+              <li><b>Pipe Mania:</b> a stage built like the old Windows pipes screensaver.</li>
+              <li><b>Wall of Clesh:</b> the boss, a huge wall creeping toward you.</li>
+            </ul>
+          </div>
+          <figure>
+            <svg class="dia" viewBox="0 0 360 230" role="img" aria-label="Diagram: five stage columns. Zoo has two tutorial levels; Flatlands, Roadside, Oasis and Mesa each have five levels and a highlighted special level: Tower Defense, GTA, Pipe Mania and the Wall of Clesh boss">
+              <g text-anchor="middle">
+                <text x="36" y="24" class="d-t">Zoo</text><text x="108" y="24" class="d-t">Flatlands</text><text x="180" y="24" class="d-t">Roadside</text><text x="252" y="24" class="d-t">Oasis</text><text x="324" y="24" class="d-t">Mesa</text>
+              </g>
+              <g class="d-box">
+                <rect x="24" y="38" width="24" height="20" rx="3"/><rect x="24" y="64" width="24" height="20" rx="3"/>
+                <rect x="96" y="38" width="24" height="20" rx="3"/><rect x="96" y="64" width="24" height="20" rx="3"/><rect x="96" y="90" width="24" height="20" rx="3"/><rect x="96" y="116" width="24" height="20" rx="3"/><rect x="96" y="142" width="24" height="20" rx="3"/>
+                <rect x="168" y="38" width="24" height="20" rx="3"/><rect x="168" y="64" width="24" height="20" rx="3"/><rect x="168" y="90" width="24" height="20" rx="3"/><rect x="168" y="116" width="24" height="20" rx="3"/><rect x="168" y="142" width="24" height="20" rx="3"/>
+                <rect x="240" y="38" width="24" height="20" rx="3"/><rect x="240" y="64" width="24" height="20" rx="3"/><rect x="240" y="90" width="24" height="20" rx="3"/><rect x="240" y="116" width="24" height="20" rx="3"/><rect x="240" y="142" width="24" height="20" rx="3"/>
+                <rect x="312" y="38" width="24" height="20" rx="3"/><rect x="312" y="64" width="24" height="20" rx="3"/><rect x="312" y="90" width="24" height="20" rx="3"/><rect x="312" y="116" width="24" height="20" rx="3"/><rect x="312" y="142" width="24" height="20" rx="3"/>
+              </g>
+              <g text-anchor="middle" class="d-n"><text x="36" y="52">T1</text><text x="36" y="78">T2</text></g>
+              <g class="d-hot">
+                <rect x="82" y="176" width="52" height="26" rx="5"/><rect x="154" y="176" width="52" height="26" rx="5"/><rect x="226" y="176" width="52" height="26" rx="5"/><rect x="298" y="176" width="52" height="26" rx="5"/>
+              </g>
+              <g text-anchor="middle" class="d-a"><text x="108" y="193">TD</text><text x="180" y="193">GTA</text><text x="252" y="193">Pipes</text><text x="324" y="193">BOSS</text></g>
+              <text x="180" y="222" text-anchor="middle" class="d-n">special level = new hero</text>
+            </svg>
+          </figure>
+        </div>
+
+        <div class="sec solo">
+          <div class="sec-text">
+            <span class="num">07 · Testing</span>
+            <h4>Built to be tested</h4>
+            <ul class="points">
+              <li>Debug readouts (damage numbers, cactus health bars, the damage-model switch) each toggle on their own.</li>
+              <li>Editor tools build levels, the title screen, and the Cactony minigame scene from code, so nothing is wired by hand.</li>
+              <li>Automated checks fire real shots, test the rewind and the hero meters, and save screenshots for review.</li>
+              <li>The full game flow is in: title screen, level select, loadout, objectives (survive the waves, defend the line, shot limits), and Cactony, a bonus merge-and-score minigame.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- ===================== PVZ HEROES SUPERCHARGED ===================== -->
+    <details class="game" id="pvz-heroes-supercharged">
+      <summary>
+        <div class="sum-main">
+          <div class="sum-title"><h3>PvZ Heroes Supercharged</h3><span class="pill dev">In development</span><span class="tag">Unity · C# · networking · Windows + Android</span></div>
+          <p class="pitch">A non-commercial fan recreation of Plants vs. Zombies Heroes, built to be its Pokémon Showdown: every card unlocked, the original-style deckbuilder, and online matches between Windows and Android. No ads and no monetization.</p>
+          <p class="role"><b>My role:</b> project lead, systems design, playtesting and QA</p>
+        </div>
+        <span class="chev" aria-hidden="true"></span>
+      </summary>
+      <div class="game-body">
+        <dl class="facts"><div><dt>Type</dt><dd>Fan project, non-commercial</dd></div><div><dt>Team</dt><dd>Solo project</dd></div><div><dt>Stage</dt><dd>All cards working; online crossplay in testing</dd></div></dl>
+
+        <div class="sec">
+          <div class="sec-text">
+            <span class="num">01 · Engine</span>
+            <h4>Cards run from data, not scripts</h4>
+            <p>The game's card abilities turned out to be a small rule language. Each card is built from <b>triggers</b> (when), <b>queries</b> (who), and <b>effects</b> (what happens). There are 124 types across the whole card pool.</p>
+            <p>The engine implements each type once, and every card that uses it starts working. All 586 usable cards now work, backed by 1,656 automated checks, with bot matches for both factions.</p>
+          </div>
+          <figure>
+            <svg class="dia" viewBox="0 0 360 220" role="img" aria-label="Diagram: the Grave Robber card is broken into a trigger, a query and an effect, which feed one shared engine used by every card">
+              <rect x="12" y="24" width="96" height="128" rx="8" class="d-box"/>
+              <text x="60" y="48" text-anchor="middle" class="d-t">Grave Robber</text>
+              <text x="22" y="76" class="d-n">"When a zombie</text>
+              <text x="22" y="90" class="d-n">is revealed,</text>
+              <text x="22" y="104" class="d-n">this gets +1</text>
+              <text x="22" y="118" class="d-n">attack."</text>
+              <line x1="110" y1="88" x2="138" y2="88" class="d-line" marker-end="url(#ah)"/>
+              <rect x="142" y="24" width="122" height="34" rx="6" class="d-box"/><text x="152" y="45" class="d-a">TRIGGER</text><text x="216" y="45" class="d-n">reveal</text>
+              <rect x="142" y="70" width="122" height="34" rx="6" class="d-box"/><text x="152" y="91" class="d-a">QUERY</text><text x="204" y="91" class="d-n">this card</text>
+              <rect x="142" y="116" width="122" height="34" rx="6" class="d-box"/><text x="152" y="137" class="d-a">EFFECT</text><text x="204" y="137" class="d-n">+1 attack</text>
+              <line x1="266" y1="88" x2="290" y2="88" class="d-line" marker-end="url(#ah)"/>
+              <rect x="294" y="24" width="56" height="126" rx="8" class="d-hot"/>
+              <text x="322" y="84" text-anchor="middle" class="d-a">ONE</text><text x="322" y="98" text-anchor="middle" class="d-a">ENGINE</text>
+              <text x="12" y="186" class="d-t">124 types · 586 cards working</text>
+              <text x="12" y="204" class="d-n">implement a type once → every card using it works</text>
+            </svg>
+          </figure>
+        </div>
+
+        <div class="sec">
+          <div class="sec-text">
+            <span class="num">02 · Online</span>
+            <h4>Windows ↔ Android crossplay</h4>
+            <p>Players join a private room with an eight-character code. The room server owns the match: clients only send commands like "play this card here," and the server sends back state snapshots plus the events each screen needs to animate, like attacks, draws, and moves.</p>
+            <p>Hidden information stays hidden, so face-down gravestones never leak to the other player. Both clients show the original animated battlefield. In November 2026 I played a full match between my Windows PC and an Android tablet on real hardware.</p>
+          </div>
+          <figure>
+            <svg class="dia" viewBox="0 0 360 210" role="img" aria-label="Diagram: a Windows client and an Android client each send commands up to a room server that owns the match, and the server sends snapshots and events back down to both">
+              <rect x="125" y="16" width="110" height="52" rx="8" class="d-hot"/>
+              <text x="180" y="38" text-anchor="middle" class="d-a">ROOM SERVER</text>
+              <text x="180" y="55" text-anchor="middle" class="d-n">owns the match</text>
+              <rect x="14" y="128" width="100" height="52" rx="8" class="d-box"/><text x="64" y="158" text-anchor="middle" class="d-t">Windows</text>
+              <rect x="246" y="128" width="100" height="52" rx="8" class="d-box"/><text x="296" y="158" text-anchor="middle" class="d-t">Android</text>
+              <line x1="54" y1="126" x2="132" y2="70" class="d-you-line" marker-end="url(#ahYou)"/>
+              <line x1="150" y1="70" x2="78" y2="126" class="d-line d-dash" marker-end="url(#ah)"/>
+              <line x1="306" y1="126" x2="228" y2="70" class="d-you-line" marker-end="url(#ahYou)"/>
+              <line x1="210" y1="70" x2="282" y2="126" class="d-line d-dash" marker-end="url(#ah)"/>
+              <text x="14" y="92" class="d-n">commands</text>
+              <text x="122" y="112" class="d-n">snapshots</text><text x="122" y="124" class="d-n">+ events</text>
+              <text x="180" y="200" text-anchor="middle" class="d-n">join with an 8-character room code</text>
+            </svg>
+          </figure>
+        </div>
+
+        <div class="sec solo">
+          <div class="sec-text">
+            <span class="num">03 · QA</span>
+            <h4>From the bug log</h4>
+            <p>Real bugs from this project, written up the way I'd file them. The last two passed over a hundred automated online checks and still broke the first time two real devices played.</p>
+          </div>
+          <div class="ticket-row">
+            <div class="ticket">
+              <div class="ticket-top"><span class="sev crit">Critical</span><span class="ticket-id">Targeting</span></div>
+              <h5>Squash destroys every zombie on the board</h5>
+              <dl>
+                <dt>Expected</dt><dd>Squash destroys the one zombie the player picks.</dd>
+                <dt>Actual</dt><dd>A shortcut handed abilities with no chosen target the caster instead, so Squash's filter matched every zombie.</dd>
+                <dt>Fix</dt><dd>Abilities that need a pick resolve to nothing until the player picks. A dedicated check guards the 44 other cards the shortcut would have broken.</dd>
+              </dl>
+            </div>
+            <div class="ticket">
+              <div class="ticket-top"><span class="sev major">Major</span><span class="ticket-id">Online · crossplay</span></div>
+              <h5>Frozen fighters never show as frozen online, and stay frozen</h5>
+              <dl>
+                <dt>Expected</dt><dd>A frozen fighter shows the ice cube, skips its next attack, then thaws.</dd>
+                <dt>Actual</dt><dd>Neither client received frozen status. A frozen fighter's bonus attack was skipped without using up the freeze.</dd>
+                <dt>Fix</dt><dd>Frozen status now reaches both players with the original ice art, and a skipped bonus attack thaws the fighter.</dd>
+              </dl>
+            </div>
+            <div class="ticket">
+              <div class="ticket-top"><span class="sev major">Major</span><span class="ticket-id">Online · HUD</span></div>
+              <h5>End Turn stays disabled after a choice during Zombie Tricks</h5>
+              <dl>
+                <dt>Expected</dt><dd>End Turn becomes available as soon as a pending choice clears.</dd>
+                <dt>Actual</dt><dd>The HUD only refreshed when the phase changed, so the button stayed greyed out and the match stalled.</dd>
+                <dt>Fix</dt><dd>A dedicated "actions available" event refreshes the button without replaying the phase animation.</dd>
+              </dl>
+            </div>
+          </div>
+          <figure class="shot">
+            <div class="pair-row">
+              <img src="images/pvz-board.jpg" width="560" height="995" alt="An online match on the original battlefield with fighters played on both sides">
+              <img src="images/pvz-frozen.jpg" width="560" height="995" alt="The same match with a frozen zombie showing the ice cube over its attack">
+            </div>
+            <figcaption>Online match, Windows build. Right: the frozen zombie shows the ice cube after the fix.</figcaption>
+          </figure>
+        </div>
+
+        <div class="sec">
+          <div class="sec-text">
+            <span class="num">04 · UI</span>
+            <h4>Deckbuilder rebuilt to match the original</h4>
+            <p>I rejected the first custom dark interface and had it rebuilt to match the original game: seed-packet cards, hero and class art, a four-column collection, and original card inspection. It enforces the real rules (class restrictions, 40-card decks, four copies max) with every card unlocked.</p>
+            <p>Matches run on the original boards with the original animations, including heroes, fighters, and the Fight banner.</p>
+          </div>
+          <figure class="clip tall">
+            <div class="pair-row one">
+              <video src="images/pvz-match-clip.mp4" poster="images/pvz-match-clip-poster.jpg" width="540" height="956" autoplay muted loop playsinline preload="metadata" aria-label="Match clip: cards played on the original animated battlefield"></video>
+            </div>
+            <figcaption>A local match, late October build. Muted.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </details>
+
+    <!-- ===================== YANDERE SOULSLIKE ===================== -->
+    <details class="game" id="yandere-soulslike">
+      <summary>
+        <div class="sum-main">
+          <div class="sum-title"><h3>Yandere Soulslike</h3><span class="pill dev">In development</span><span class="tag">Unity 6 · C# · VRoid + Blender · Wwise</span></div>
+          <p class="pitch">A soulslike set in a high school seen through a yandere's rose-tinted eyes. Teachers and students have mutated into extreme versions of their obsessions. It aims to be the most readable soulslike, the one you hand to someone who has never finished one.</p>
+          <p class="role">Near-solo · <b>My role:</b> design and programming</p>
+        </div>
+        <span class="chev" aria-hidden="true"></span>
+      </summary>
+      <div class="game-body">
+        <dl class="facts"><div><dt>Type</dt><dd>Original game, near-solo</dd></div><div><dt>Team</dt><dd>Me, with a friend on concept art</dd></div><div><dt>Stage</dt><dd>Core loop playable; combat demo by end of 2027</dd></div></dl>
+
+        <figure class="clip">
+          <video src="images/yandere-combat-clip.mp4" poster="images/yandere-combat-clip-poster.jpg" width="1280" height="720" autoplay muted loop playsinline preload="metadata" aria-label="Combat clip: the main character fighting placeholder enemies on a test floor"></video>
+          <figcaption>Combat with the main character, October 25 test build, placeholder enemies. Muted.</figcaption>
+        </figure>
+
+        <div class="progress">
+          <span class="eyebrow">How it got here</span>
+          <div class="progress-row three">
+            <figure><img src="images/ys-progress-jul.jpg" width="1280" height="720" alt="July build: a capsule player swinging a placeholder sword at capsule enemies" loading="lazy"><figcaption><b>Jul 7</b>Capsules and a placeholder sword.</figcaption></figure>
+            <figure><img src="images/ys-progress-oct25.jpg" width="1280" height="720" alt="October 25 build: the main character model with a katana, combat HUD and enemies" loading="lazy"><figcaption><b>Oct 25</b>Main character, katana, and combat HUD.</figcaption></figure>
+            <figure><img src="images/yandere-parry.jpg" width="1300" height="731" alt="November 1 build: parrying a heavy attack on the Kabuki stage greybox" loading="lazy"><figcaption><b>Nov 1</b>Kabuki stage greybox and attack cues.</figcaption></figure>
+          </div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-text">
+            <span class="num">01 · Design</span>
+            <h4>Easy to read, hard to execute</h4>
+            <p>The player can always tell what attack is coming. Difficulty comes from timing, never from hidden information.</p>
+            <ul class="points">
+              <li><b>Parry beats everything except grabs.</b> Each attack has its own parry window, based on how recently block was pressed.</li>
+              <li><b>Color cues:</b> cyan means heavy, yellow means grab, and light attacks get no cue. A grab can only be dodged.</li>
+              <li>Posture combat in the style of Lies of P. An unblocked hit can take half your health, blocking cuts damage by 85%, a guard meter keeps blocking from being a free win, and staggered enemies open up to a front-only fatal attack.</li>
+            </ul>
+          </div>
+          <figure>
+            <svg class="dia" viewBox="0 0 360 200" role="img" aria-label="Diagram: three enemy attacks on a timeline. Light has no cue and a parry window before the hit. Heavy has a cyan cue and a parry window. Grab has a yellow cue and no parry window, dodge only.">
+              <g text-anchor="middle" class="d-n"><text x="160" y="22">wind-up</text><text x="263" y="22">parry</text><text x="314" y="22">hit</text></g>
+              <text x="12" y="62" class="d-t">Light</text>
+              <line x1="96" y1="58" x2="300" y2="58" class="d-line" opacity=".4"/>
+              <rect x="248" y="48" width="30" height="20" rx="3" class="d-good" opacity=".75"/>
+              <rect x="312" y="44" width="4" height="28" class="d-enemy"/>
+              <text x="12" y="112" class="d-t">Heavy</text>
+              <circle cx="84" cy="108" r="7" style="fill:var(--d-cyan)"/>
+              <line x1="96" y1="108" x2="300" y2="108" class="d-line" opacity=".4"/>
+              <rect x="248" y="98" width="30" height="20" rx="3" class="d-good" opacity=".75"/>
+              <rect x="312" y="94" width="4" height="28" class="d-enemy"/>
+              <text x="12" y="162" class="d-t">Grab</text>
+              <circle cx="84" cy="158" r="7" style="fill:var(--d-yellow)"/>
+              <line x1="96" y1="158" x2="300" y2="158" class="d-line" opacity=".4"/>
+              <text x="200" y="150" class="d-r" text-anchor="middle">no parry · dodge only</text>
+              <rect x="312" y="144" width="4" height="28" class="d-enemy"/>
+              <text x="84" y="190" text-anchor="middle" class="d-n">cue</text>
+            </svg>
+          </figure>
+        </div>
+
+        <div class="sec">
+          <div class="sec-text">
+            <span class="num">02 · Code</span>
+            <h4>One damage flow, and the posture bug</h4>
+            <p>Every hit takes the same path: the hitbox's damage finds a health component, checks the team, then hands off to the player's block, parry, and i-frame logic or to the enemy's posture handling.</p>
+            <p><b>The bug:</b> the whole posture system was silently dead. Posture buildup and the "break out of stagger early" counter were wired to the same call, so enemies never broke. I split them into two separate paths, which led to the full refactor.</p>
+          </div>
+          <figure>
+            <svg class="dia" viewBox="0 0 360 230" role="img" aria-label="Diagram: Hitbox to Damage to Health, which splits to the Enemy (posture) and the Player (block, parry, i-frames). The enemy's posture splits into buildup and break-out counter, which used to be wired to one call.">
+              <rect x="10" y="16" width="86" height="32" rx="6" class="d-box"/><text x="53" y="36" text-anchor="middle" class="d-t">Hitbox</text>
+              <rect x="137" y="16" width="86" height="32" rx="6" class="d-box"/><text x="180" y="36" text-anchor="middle" class="d-t">Damage</text>
+              <rect x="264" y="16" width="86" height="32" rx="6" class="d-box"/><text x="307" y="36" text-anchor="middle" class="d-t">Health</text>
+              <line x1="96" y1="32" x2="135" y2="32" class="d-line" marker-end="url(#ah)"/>
+              <line x1="223" y1="32" x2="262" y2="32" class="d-line" marker-end="url(#ah)"/>
+              <path d="M307 48 V70 H90 V88" class="d-line" marker-end="url(#ah)"/>
+              <path d="M291 70 V88" class="d-line" marker-end="url(#ah)"/>
+              <rect x="20" y="90" width="140" height="40" rx="6" class="d-box"/><text x="90" y="108" text-anchor="middle" class="d-t">Enemy</text><text x="90" y="122" text-anchor="middle" class="d-n">posture / stagger</text>
+              <rect x="210" y="90" width="140" height="40" rx="6" class="d-box"/><text x="280" y="108" text-anchor="middle" class="d-t">Player</text><text x="280" y="122" text-anchor="middle" class="d-n">block/parry/i-frames</text>
+              <line x1="56" y1="130" x2="56" y2="160" class="d-line" marker-end="url(#ah)"/>
+              <line x1="124" y1="130" x2="124" y2="160" class="d-line" marker-end="url(#ah)"/>
+              <rect x="10" y="162" width="94" height="32" rx="6" class="d-hot"/><text x="57" y="182" text-anchor="middle" class="d-a">buildup</text>
+              <rect x="112" y="162" width="110" height="32" rx="6" class="d-hot"/><text x="167" y="182" text-anchor="middle" class="d-a">break-out count</text>
+              <text x="10" y="216" class="d-r">bug: both were one call → posture never broke</text>
+            </svg>
+          </figure>
+        </div>
+
+        <div class="sec">
+          <div class="sec-text">
+            <span class="num">03 · Testing</span>
+            <h4>An automated playtest on F10</h4>
+            <p>Press F10 in play mode and a scripted gamepad drives the real input path for about 70 seconds. It tests combos, heavy and fatal attacks, rolls, lock-on steps, the backflip, healing, both supers, parries, grabs, knockdowns, resting, death, and respawn, then writes a report with screenshots. The latest run passes 85 checks with 0 failures.</p>
+            <p>It caught a real bug: knocked-down and dead characters floated at standing height. The fix brought the hips from 0.79 m down to 0.18 m off the floor, and the test now measures it.</p>
+          </div>
+          <figure class="shot">
+            <img src="images/yandere-parry.jpg" width="1300" height="731" alt="The player character parrying a heavy attack on the Kabuki stage greybox, with the on-screen cue reading Heavy, parry or dodge">
+            <figcaption>A parry against a heavy attack, captured by the F10 test. Greybox arena.</figcaption>
+          </figure>
+        </div>
+
+        <div class="sec">
+          <div class="sec-text">
+            <span class="num">04 · Level</span>
+            <h4>The Kabuki theatre boss arena</h4>
+            <p>The vertical slice boss fights on a Kabuki stage. At half health the curtain closes and geisha minions perform a dance number while the boss's parryable attack cue plays underneath.</p>
+            <ul class="points">
+              <li>Greyboxed as a 36 × 30 m stage with a 7.7 m apron for the dance, an audience pit 1.5 m below, and a hanamichi runway to the theatre door.</li>
+              <li>The door is the checkpoint, a bathroom where she rests.</li>
+              <li>An editor tool builds it, so it can be rebuilt without moving anything placed by hand.</li>
+            </ul>
+          </div>
+          <figure>
+            <svg class="dia" viewBox="0 0 360 268" role="img" aria-label="Top-down diagram: a grey theatre with a stage at the top, a curtain line, the boss upstage, an apron at the front, an audience pit below, and a runway on the left leading to the door checkpoint where the player starts, with two enemies on the runway">
+              <rect x="8" y="8" width="344" height="234" rx="4" class="d-wall-line" stroke-width="6"/>
+              <rect x="80" y="18" width="250" height="132" class="d-box"/>
+              <text x="90" y="34" class="d-n">STAGE 36 × 30 m</text>
+              <line x1="80" y1="88" x2="330" y2="88" class="d-acc-line d-dash"/>
+              <text x="276" y="82" class="d-a">curtain</text>
+              <circle cx="205" cy="56" r="13" class="d-enemy"/>
+              <text x="224" y="60" class="d-r">boss</text>
+              <text x="90" y="128" class="d-n">apron · geisha dance</text>
+              <rect x="80" y="160" width="250" height="74" class="d-wall-line" stroke-width="2"/>
+              <g class="d-wall-line" stroke-width="1.5"><line x1="92" y1="178" x2="318" y2="178"/><line x1="92" y1="196" x2="318" y2="196"/><line x1="92" y1="214" x2="318" y2="214"/></g>
+              <text x="205" y="230" text-anchor="middle" class="d-n">audience pit (1.5 m down)</text>
+              <rect x="30" y="100" width="40" height="134" class="d-box"/>
+              <line x1="70" y1="104" x2="80" y2="104" class="d-line"/>
+              <text x="50" y="94" text-anchor="middle" class="d-n">runway</text>
+              <circle cx="50" cy="132" r="7" class="d-enemy"/><circle cx="50" cy="158" r="7" class="d-enemy"/>
+              <circle cx="50" cy="206" r="9" class="d-you"/>
+              <line x1="50" y1="195" x2="50" y2="171" class="d-you-line" marker-end="url(#ahYou)"/>
+              <rect x="30" y="236" width="40" height="8" style="fill:var(--accent)"/>
+              <text x="30" y="261" class="d-a">door = checkpoint (start here)</text>
+            </svg>
+          </figure>
+        </div>
+
+        <div class="sec solo">
+          <div class="sec-text">
+            <span class="num">05 · Core loop</span>
+            <h4>What's playable now</h4>
+            <ul class="points">
+              <li><b>Main character in engine:</b> built in VRoid and finished in Blender from a turnaround sheet, rigged for Unity's humanoid animation, with attack hitboxes timed by animation events.</li>
+              <li><b>Healing with a Senpai photo:</b> you're rooted while using it, and the heal lands at the end. Get hit first and you lose the photo but gain a big chunk of rage.</li>
+              <li><b>Rage and supers:</b> rage fills from damage, parries, and fatal attacks and survives death. You equip two supers that cost 1 to 3 bars.</li>
+              <li><b>Death and bathroom checkpoints:</b> nothing is lost on death.</li>
+              <li><b>Plan:</b> a 66-week roadmap scheduled around MSU's calendar, with a vertical slice of the Kabuki boss by April 2027 and a combat demo by the end of 2027.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- ===================== SHROOM TO BREATHE ===================== -->
+    <details class="game" id="shroom-to-breathe">
+      <summary>
+        <div class="sum-main">
+          <div class="sum-title"><h3>Shroom To Breathe</h3><span class="pill dev">In development</span><span class="tag">Unity 6 · UI Toolkit · mobile</span></div>
+          <p class="pitch">An idle collect-a-thon for focus. Set a timer, leave your phone alone, and grow Shrümlings. Merge them into new colors and tiers, and spend the Spores they make on cosmetics.</p>
+          <p class="role">Team project, joined mid-development · <b>My role:</b> Unity programming and UI</p>
+        </div>
+        <span class="chev" aria-hidden="true"></span>
+      </summary>
+      <div class="game-body">
+        <dl class="facts"><div><dt>Type</dt><dd>Original mobile game, team project</dd></div><div><dt>Team</dt><dd>Joined mid-development; team artist</dd></div><div><dt>Stage</dt><dd>Core boards and focus timer working</dd></div></dl>
+
+        <div class="sec">
+          <div class="sec-text">
+            <span class="num">01 · Codebase</span>
+            <h4>Taking over someone else's code</h4>
+            <p>I inherited the project after the original programmer left. Most of its history was one big commit, and it was written before the design doc existed. I learned it from the code itself, documented it, and reshaped it to match the design doc.</p>
+            <ul class="points">
+              <li><b>Boards you swipe between:</b> storage, the field, merge stumps, and a collection that remembers every Shrümling you've ever seen. Swipe down for more fields.</li>
+              <li>Shrümlings drag between boards and wiggle while they're held, and progress saves between sessions.</li>
+              <li>An editor tool builds and wires every board, so the scene never has to be set up by hand.</li>
+            </ul>
+          </div>
+          <figure>
+            <svg class="dia" viewBox="0 0 360 200" role="img" aria-label="Diagram: a grid of boards. Storage, Field, Merge and Collection in a row with swipe arrows between them, and more fields below the main field. A Shrümling is dragged from the field across to another board.">
+              <text x="12" y="20" class="d-n">SWIPE LEFT / RIGHT / DOWN BETWEEN BOARDS</text>
+              <rect x="10" y="32" width="76" height="46" rx="6" class="d-box"/><text x="48" y="60" text-anchor="middle" class="d-t">Storage</text>
+              <rect x="98" y="32" width="76" height="46" rx="6" class="d-hot"/><text x="136" y="60" text-anchor="middle" class="d-a">Field</text>
+              <rect x="186" y="32" width="76" height="46" rx="6" class="d-box"/><text x="224" y="60" text-anchor="middle" class="d-t">Merge</text>
+              <rect x="274" y="32" width="76" height="46" rx="6" class="d-box"/><text x="312" y="60" text-anchor="middle" class="d-t">Collection</text>
+              <line x1="86" y1="55" x2="98" y2="55" class="d-line"/>
+              <line x1="174" y1="55" x2="186" y2="55" class="d-line"/>
+              <line x1="262" y1="55" x2="274" y2="55" class="d-line"/>
+              <line x1="136" y1="78" x2="136" y2="100" class="d-line"/>
+              <rect x="98" y="100" width="76" height="40" rx="6" class="d-box"/><text x="136" y="124" text-anchor="middle" class="d-t">Field 2</text>
+              <line x1="136" y1="142" x2="136" y2="156" class="d-line" marker-end="url(#ah)"/>
+              <rect x="98" y="158" width="76" height="32" rx="6" class="d-wall-line d-dash"/><text x="136" y="178" text-anchor="middle" class="d-n">more…</text>
+              <circle cx="112" cy="70" r="4" class="d-you"/><circle cx="158" cy="70" r="4" class="d-you"/>
+              <path d="M162 74 C 190 112, 240 112, 222 82" class="d-you-line d-dash" marker-end="url(#ahYou)"/>
+              <text x="196" y="132" class="d-n">drag a Shrümling</text><text x="196" y="144" class="d-n">onto a merge stump</text>
+            </svg>
+          </figure>
+        </div>
+
+        <div class="sec">
+          <div class="sec-text">
+            <span class="num">02 · Mobile</span>
+            <h4>A focus timer that's fair about real life</h4>
+            <p>On Android and iPhone, the game checks why it left the screen. A locked phone or a phone call doesn't count against you. Switching to another app gets a short grace period, and closing the app fails the grow.</p>
+            <p>Apps can't see what other apps are doing, so every check fails safe: if the phone won't answer, the grace period still protects the player from a quick interruption.</p>
+          </div>
+          <figure>
+            <svg class="dia" viewBox="0 0 360 250" role="img" aria-label="Flowchart: the game leaves the screen. If the screen is locked or a call is active, keep growing. Otherwise a short grace period starts; back in time means keep growing, not back means the grow fails.">
+              <rect x="100" y="10" width="160" height="32" rx="6" class="d-box"/><text x="180" y="30" text-anchor="middle" class="d-t">Game leaves screen</text>
+              <line x1="180" y1="42" x2="180" y2="60" class="d-line" marker-end="url(#ah)"/>
+              <rect x="100" y="62" width="160" height="36" rx="18" class="d-box"/><text x="180" y="84" text-anchor="middle" class="d-t">Locked or a call?</text>
+              <line x1="260" y1="80" x2="276" y2="80" class="d-line" marker-end="url(#ah)"/><text x="315" y="58" class="d-g" text-anchor="middle">yes</text>
+              <rect x="278" y="64" width="74" height="32" rx="6" class="d-box" style="stroke:var(--d-good)"/><text x="315" y="84" text-anchor="middle" class="d-g">keep going</text>
+              <line x1="180" y1="98" x2="180" y2="122" class="d-line" marker-end="url(#ah)"/><text x="186" y="114" class="d-n">no</text>
+              <rect x="100" y="124" width="160" height="32" rx="6" class="d-hot"/><text x="180" y="144" text-anchor="middle" class="d-a">short grace period</text>
+              <line x1="180" y1="156" x2="180" y2="176" class="d-line" marker-end="url(#ah)"/>
+              <rect x="100" y="178" width="160" height="36" rx="18" class="d-box"/><text x="180" y="200" text-anchor="middle" class="d-t">Back in time?</text>
+              <line x1="260" y1="196" x2="276" y2="196" class="d-line" marker-end="url(#ah)"/><text x="315" y="174" class="d-g" text-anchor="middle">yes</text>
+              <rect x="278" y="180" width="74" height="32" rx="6" class="d-box" style="stroke:var(--d-good)"/><text x="315" y="200" text-anchor="middle" class="d-g">keep going</text>
+              <line x1="100" y1="196" x2="84" y2="196" class="d-line" marker-end="url(#ah)"/><text x="45" y="174" class="d-n" text-anchor="middle">no</text>
+              <rect x="8" y="180" width="74" height="32" rx="6" class="d-box" style="stroke:var(--d-enemy)"/><text x="45" y="200" text-anchor="middle" class="d-r">grow fails</text>
+              <text x="8" y="238" class="d-n">closing the app always fails the grow</text>
+            </svg>
+          </figure>
+        </div>
+
+        <div class="sec">
+          <div class="sec-text">
+            <span class="num">03 · Economy</span>
+            <h4>Grow length and rewards</h4>
+            <p>The slider runs from 15 to 60 minutes. It has notches every 15 minutes but doesn't snap, so 18 minutes is a real choice. Extra minutes inside a segment pay a little more, and crossing each notch is a noticeable jump. A live preview shows exactly what you'll earn.</p>
+          </div>
+          <figure class="shot">
+            <div class="pair-row one">
+              <img src="images/shroom.jpg" width="540" height="960" alt="Shroom To Breathe field board: a grow timer over grass with Shrümlings roaming and a Spores counter at the top">
+            </div>
+            <figcaption>The field board mid-grow, in-engine.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </details>
+
+    <!-- ===================== VIDEO ===================== -->
+    <details class="game" id="video-editing">
+      <summary>
+        <div class="sum-main">
+          <div class="sum-title"><h3>Gameplay editing</h3><span class="pill dev">Ongoing</span><span class="tag">Premiere Pro</span></div>
+          <p class="pitch">I edit long gameplay recordings for Paraly5er's Grounded 2 challenge series, where the recipes are randomized. My job is to find the episode inside hours of footage.</p>
+          <p class="role">For Paraly5er on YouTube · <b>My role:</b> editor</p>
+        </div>
+        <span class="chev" aria-hidden="true"></span>
+      </summary>
+      <div class="game-body">
+        <div class="sec">
+          <div class="sec-text">
+            <span class="num">01 · Editing</span>
+            <h4>Finding the episode in the footage</h4>
+            <p>I rough-cut multi-hour sessions down to the moments that carry an episode: recipe discoveries, story beats, deaths, and gear-recovery runs.</p>
+            <p>Knowing what matters in a run is the same skill as knowing which bug a developer needs to see first.</p>
+            <p><a class="watch" href="https://youtu.be/HzAoV8JddVs" target="_blank" rel="noopener">Watch a video I edited on YouTube ↗</a></p>
+          </div>
+          <figure>
+            <svg class="dia" viewBox="0 0 360 150" role="img" aria-label="Diagram: a long raw recording with four marked moments, recipe, story, death and gear run, each pulled down into a short episode cut">
+              <text x="14" y="22" class="d-n">RAW SESSION (HOURS)</text>
+              <rect x="14" y="32" width="332" height="18" rx="4" class="d-box"/>
+              <g class="d-enemy"><rect x="58" y="32" width="14" height="18"/><rect x="134" y="32" width="10" height="18"/><rect x="218" y="32" width="12" height="18"/><rect x="290" y="32" width="16" height="18"/></g>
+              <g class="d-n" text-anchor="middle"><text x="65" y="66">recipe</text><text x="139" y="66">story</text><text x="224" y="66">death</text><text x="298" y="66">gear run</text></g>
+              <g class="d-line"><path d="M65 72 L70 110" marker-end="url(#ah)"/><path d="M139 72 L103 110" marker-end="url(#ah)"/><path d="M224 72 L135 110" marker-end="url(#ah)"/><path d="M298 72 L172 110" marker-end="url(#ah)"/></g>
+              <text x="200" y="128" class="d-n">EPISODE CUT</text>
+              <g class="d-hot"><rect x="56" y="114" width="30" height="18" rx="3"/><rect x="90" y="114" width="26" height="18" rx="3"/><rect x="120" y="114" width="30" height="18" rx="3"/><rect x="154" y="114" width="36" height="18" rx="3"/></g>
+            </svg>
+          </figure>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <section class="more" aria-label="Organizations, experience, and tools">
+    <div class="panel">
+      <p class="sub">Gamma Iota Mu · MSU</p>
+      <h3>Student Treasurer</h3>
+      <p>Gamma Iota Mu is Michigan State's professional game development fraternity. As treasurer I registered the chapter as a nonprofit corporation in Michigan and handled outreach to industry speakers.</p>
+    </div>
+    <div class="panel">
+      <p class="sub">Heico · summer 2026</p>
+      <h3>ITSM Corporate Intern</h3>
+      <p>Ran application compliance audits, supported software migrations, and managed ServiceNow records under an industry mentor. Structured tickets and clean records are most of what good QA reporting is.</p>
+    </div>
+    <div class="panel">
+      <p class="sub">Toolkit</p>
+      <h3>What I work in</h3>
+      <dl class="kit">
+        <dt>Engine</dt><dd>Unity 6, C#, UI Toolkit, Input System, Git</dd>
+        <dt>Audio</dt><dd>Wwise, FL Studio, recorded foley</dd>
+        <dt>Art &amp; media</dt><dd>Premiere Pro, Figma, Blender, VRoid</dd>
+        <dt>Process</dt><dd>Bug reports, design docs, ServiceNow</dd>
+      </dl>
+    </div>
+    <div class="panel">
+      <p class="sub">Player</p>
+      <h3>What I play</h3>
+      <p><b>Brawl Stars</b> and <b>Deadlock</b> for competitive play and following the meta, <b>Lies of P</b> for the soulslike combat my own game learns from, and <b>Grounded 2</b>, which I also edit.</p>
+    </div>
+  </section>
+
+  <footer>
+    <span>Connor Walsh · Games and Interactive Media, Michigan State University</span>
+    <span class="mono">seancwalsh2006@gmail.com</span>
+  </footer>
+</main>
+
+<script>
+(function(){
+  var btn = document.getElementById('copy');
+  var email = document.getElementById('email');
+  function selectEmail(){
+    try{ var r = document.createRange(); r.selectNodeContents(email); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); }catch(e){}
+  }
+  if(btn && email){
+    btn.addEventListener('click', function(){
+      var text = email.textContent.trim();
+      var done = function(){ btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy email'; }, 1800); };
+      try{
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(text).then(done, function(){ selectEmail(); btn.textContent = 'Press Ctrl+C'; });
+        }else{ selectEmail(); btn.textContent = 'Press Ctrl+C'; }
+      }catch(e){ selectEmail(); btn.textContent = 'Press Ctrl+C'; }
+    });
+  }
+  // a link ending in #pvz-heroes-supercharged (etc.) opens that game
+  function openFromHash(){
+    var id = (location.hash || '').slice(1);
+    if(!id) return;
+    var el = document.getElementById(id);
+    if(el && el.tagName === 'DETAILS'){ el.open = true; el.scrollIntoView({block:'start'}); }
+  }
+  window.addEventListener('hashchange', openFromHash);
+  openFromHash();
+})();
+</script>
 </body>
 </html>
